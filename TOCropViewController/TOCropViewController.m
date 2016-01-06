@@ -34,6 +34,7 @@
 @property (nonatomic, strong) UIView *snapshotView;
 @property (nonatomic, strong) TOCropViewControllerTransitioning *transitionController;
 @property (nonatomic, assign) BOOL inTransition;
+@property (nonatomic, assign) CGRect initFrame;
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -63,11 +64,29 @@
         
         _transitionController = [[TOCropViewControllerTransitioning alloc] init];
         _image = image;
-        
+        _initFrame = CGRectNull;
         _defaultAspectRatio = TOCropViewControllerAspectRatioOriginal;
         _lockedAspectRatio = NO;
     }
     
+    return self;
+}
+
+- (instancetype)initWithImage:(UIImage *)image andFrame:(CGRect)frame
+{
+    self = [super init];
+    if (self) {
+        self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        self.modalPresentationStyle = UIModalPresentationFullScreen;
+
+        _transitionController = [[TOCropViewControllerTransitioning alloc] init];
+        _image = image;
+
+        _initFrame = frame;
+        _defaultAspectRatio = TOCropViewControllerAspectRatioOriginal;
+        _lockedAspectRatio = NO;
+    }
+
     return self;
 }
 
@@ -76,7 +95,12 @@
     [super viewDidLoad];
 
     BOOL landscapeLayout = CGRectGetWidth(self.view.frame) > CGRectGetHeight(self.view.frame);
-    self.cropView.frame = (CGRect){(landscapeLayout ? 44.0f : 0.0f),0,(CGRectGetWidth(self.view.bounds) - (landscapeLayout ? 44.0f : 0.0f)), (CGRectGetHeight(self.view.bounds)-(landscapeLayout ? 0.0f : 44.0f)) };
+
+    if (CGRectIsNull(self.initFrame)) {
+        self.initFrame = self.view.bounds;
+    }
+    self.cropView.frame = (CGRect){(landscapeLayout ? 44.0f : 0.0f),0,(CGRectGetWidth(self.initFrame) - (landscapeLayout ? 44.0f : 0.0f)), (CGRectGetHeight(self.initFrame)-(landscapeLayout ? 0.0f : 44.0f)) };
+
     [self.view addSubview:self.cropView];
 
     self.toolbar.frame = [self frameForToolBarWithVerticalLayout:CGRectGetWidth(self.view.bounds) < CGRectGetHeight(self.view.bounds)];
@@ -594,6 +618,14 @@
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
 }
+
+- (UIImage *)getCroppedImage
+{
+    CGRect cropFrame = self.cropView.croppedImageFrame;
+    NSInteger angle = self.cropView.angle;
+    return [self.image croppedImageWithFrame:cropFrame angle:angle];
+}
+
 
 #pragma mark - Property methods
 

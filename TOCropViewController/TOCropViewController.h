@@ -141,6 +141,8 @@ typedef NS_ENUM(NSInteger, TOCropViewControllerAspectRatio) {
  */
 - (instancetype)initWithImage:(UIImage *)image;
 
+- (instancetype)initWithImage:(UIImage *)image andFrame:(CGRect)frame;
+
 /**
  Play a custom animation of the target image zooming to its position in the crop controller while the background fades in.
  If any view configurations need to be done before the animation starts, please do them in `prepareForTransitionHandler`
@@ -170,6 +172,9 @@ typedef NS_ENUM(NSInteger, TOCropViewControllerAspectRatio) {
  @param completion A block that is called once the transition animation is completed.
  */
 - (void)dismissAnimatedFromParentViewController:(UIViewController *)viewController toFrame:(CGRect)frame completion:(void (^)(void))completion;
+
+- (UIImage *)getCroppedImage;
+
 
 @end
 

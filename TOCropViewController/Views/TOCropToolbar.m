@@ -122,14 +122,16 @@
     
     BOOL verticalLayout = (CGRectGetWidth(self.bounds) < CGRectGetHeight(self.bounds));
     CGSize boundsSize = self.bounds.size;
-    
-    self.cancelIconButton.hidden = (!verticalLayout);
-    self.cancelTextButton.hidden = (verticalLayout);
-    self.doneIconButton.hidden   = (!verticalLayout);
-    self.doneTextButton.hidden   = (verticalLayout);
+
+    self.cancelIconButton.hidden = (!verticalLayout) || self.actionButtonHidden;
+    self.cancelTextButton.hidden = (verticalLayout) || self.actionButtonHidden;
+    self.doneIconButton.hidden   = (!verticalLayout) || self.actionButtonHidden;
+    self.doneTextButton.hidden   = (verticalLayout) || self.actionButtonHidden;
    
     self.clampButton.hidden = self.clampButtonHidden;
     self.rotateButton.hidden = self.rotateButtonHidden;
+
+
    
     CGFloat containerRectWidth = 165.0f;
     NSInteger buttonCount = 3;
