@@ -57,7 +57,7 @@
 }
 
 - (void)setup {
-    self.backgroundColor = [UIColor colorWithWhite:0.0f alpha:1];
+    self.backgroundColor = [UIColor colorWithWhite:0.14f alpha:1];
     
     _doneTextButton = [UIButton buttonWithType:UIButtonTypeSystem];
     _doneTextButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
