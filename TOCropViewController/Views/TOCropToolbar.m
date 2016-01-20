@@ -102,8 +102,9 @@
     
     _rotateButton = [UIButton buttonWithType:UIButtonTypeSystem];
     _rotateButton.contentMode = UIViewContentModeCenter;
+    _rotateButton.contentMode = UIViewContentModeCenter;
     _rotateButton.tintColor = [UIColor whiteColor];
-    [_rotateButton setImage:[TOCropToolbar rotateImage] forState:UIControlStateNormal];
+    [_rotateButton setImage:[UIImage imageNamed:@"IMG_capture_rotate"] forState:UIControlStateNormal];
     [_rotateButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_rotateButton];
     
@@ -111,7 +112,7 @@
     _resetButton.contentMode = UIViewContentModeCenter;
     _resetButton.tintColor = [UIColor whiteColor];
     _resetButton.enabled = NO;
-    [_resetButton setImage:[TOCropToolbar resetImage] forState:UIControlStateNormal];
+    [_resetButton setImage:[UIImage imageNamed:@"IMG_capture_original"] forState:UIControlStateNormal];
     [_resetButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_resetButton];
 }
@@ -177,14 +178,17 @@
     }
 
     CGRect buttonFrame;
+    CGFloat interval = [UIScreen mainScreen].bounds.size.width / 4;
     if (!self.rotateButtonHidden) {
         CGRectDivide(containerRect, &buttonFrame, &containerRect, buttonWidth, rectEdge);
-        self.rotateButton.frame = buttonFrame;
+        self.rotateButton.frame = CGRectMake(0, 0, 19, 22);
+        self.rotateButton.center = CGPointMake(interval * 1, 20);
     }
     
     CGRectDivide(containerRect, &buttonFrame, &containerRect, buttonWidth, rectEdge);
-    self.resetButton.frame = buttonFrame;
-    
+    self.resetButton.frame = CGRectMake(0, 0, 20, 20);;
+    self.resetButton.center = CGPointMake(interval * 3, 20);
+
     if (!self.clampButtonHidden) {
         CGRectDivide(containerRect, &buttonFrame, &containerRect, buttonWidth, rectEdge);
         self.clampButton.frame = buttonFrame;
