@@ -293,7 +293,7 @@ CGFloat titleLabelHeight;
     }
     else {
         frame.origin.x = 0.0f;
-        frame.size.height = CGRectGetHeight(bounds);
+        frame.size.height = CGRectGetHeight(bounds) * 0.6;
 
         if (_toolbarPosition == TOCropViewControllerToolbarPositionBottom) {
 			frame.origin.y = 0.0f;
