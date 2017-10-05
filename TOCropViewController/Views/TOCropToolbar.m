@@ -44,13 +44,6 @@
 - (void)setup;
 - (void)buttonTapped:(id)button;
 
-+ (UIImage *)doneImage;
-+ (UIImage *)cancelImage;
-+ (UIImage *)resetImage;
-+ (UIImage *)rotateCCWImage;
-+ (UIImage *)rotateCWImage;
-+ (UIImage *)clampImage;
-
 @end
 
 @implementation TOCropToolbar

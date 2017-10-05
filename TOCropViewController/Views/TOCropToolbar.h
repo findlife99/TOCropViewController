@@ -71,5 +71,11 @@
 /* Done button frame for popover controllers */
 @property (nonatomic, readonly) CGRect doneButtonFrame;
 
++ (UIImage *)doneImage;
++ (UIImage *)cancelImage;
++ (UIImage *)resetImage;
++ (UIImage *)rotateCCWImage;
++ (UIImage *)rotateCWImage;
++ (UIImage *)clampImage;
 
 @end
