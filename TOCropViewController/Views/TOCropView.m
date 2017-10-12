@@ -426,14 +426,6 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     
     //We can't simply match the frames since if the images are rotated, the frame property becomes unusable
     self.foregroundImageView.frame = [self.backgroundContainerView.superview convertRect:self.backgroundContainerView.frame toView:self.foregroundContainerView];
-
-//    if (self.previewTimer && self.previewTimer.isValid) {
-//        [self.previewTimer invalidate];
-//        self.previewTimer = nil;
-//    }
-//
-//    self.previewTimer = [NSTimer timerWithTimeInterval:1.f target:self selector:@selector(updatePreviewViewFrame) userInfo:nil repeats:NO];
-//    [self updatePreviewViewFrame];
 }
 
 - (void)updatePreviewViewFrame {
@@ -468,7 +460,12 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     label.textAlignment = NSTextAlignmentCenter;
     label.font = [UIFont systemFontOfSize:15.f weight:UIFontWeightMedium];
     [self.previewView addSubview:label];
+    self.previewView.alpha = 0.f;
     [self addSubview:self.previewView];
+
+    [UIView animateWithDuration:0.4f animations:^{
+        self.previewView.alpha = 1.f;
+    } completion:nil];
 }
 
 - (void)updateCropBoxFrameWithGesturePoint:(CGPoint)point
