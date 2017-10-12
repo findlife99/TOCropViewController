@@ -433,7 +433,7 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
 //    }
 //
 //    self.previewTimer = [NSTimer timerWithTimeInterval:1.f target:self selector:@selector(updatePreviewViewFrame) userInfo:nil repeats:NO];
-    [self updatePreviewViewFrame];
+//    [self updatePreviewViewFrame];
 }
 
 - (void)updatePreviewViewFrame {
@@ -888,6 +888,28 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     self.resetTimer = nil;
 }
 
+- (void)startPreviewTimer
+{
+    if (self.previewTimer) {
+        return;
+    }
+
+    if (self.aspectRatio.height == 1.f && self.aspectRatio.width == 1.f) {
+        return;
+    }
+
+    self.previewTimer = [NSTimer scheduledTimerWithTimeInterval:1.f target:self selector:@selector(updatePreviewViewFrame) userInfo:nil repeats:NO];
+}
+
+- (void)cancelPreviewTimer
+{
+    if (self.previewView) {
+        [self.previewView removeFromSuperview];
+        [self.previewTimer invalidate];
+        self.previewTimer = nil;
+    }
+}
+
 - (TOCropViewOverlayEdge)cropEdgeForPoint:(CGPoint)point
 {
     CGRect frame = self.cropBoxFrame;
@@ -1226,6 +1248,8 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
 {
     [self cancelResetTimer];
     [self setEditing:YES animated:YES];
+
+    [self cancelPreviewTimer];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -1264,6 +1288,8 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
 {
     if (self.internalLayoutDisabled)
         return;
+
+    [self cancelPreviewTimer];
     
     CGRect contentRect = self.contentBounds;
     CGRect cropFrame = self.cropBoxFrame;
@@ -1350,6 +1376,8 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
                             options:UIViewAnimationOptionBeginFromCurrentState
                          animations:translateBlock
                          completion:nil];
+
+        [self startPreviewTimer];
     });
 }
 
@@ -1464,6 +1492,8 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
                         options:UIViewAnimationOptionBeginFromCurrentState
                      animations:translateBlock
                      completion:nil];
+
+    [self startPreviewTimer];
 }
 
 - (void)rotateImageNinetyDegreesAnimated:(BOOL)animated
