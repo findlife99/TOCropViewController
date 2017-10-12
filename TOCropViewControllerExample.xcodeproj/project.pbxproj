@@ -56,6 +56,8 @@
 		2F5062F31F53E31F00AA9F14 /* TOCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DB4D831B234CFA008B8466 /* TOCropViewController.m */; };
 		2F5062F41F53E32800AA9F14 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 223424751ABBC0CD00BBC2B1 /* ViewController.m */; };
 		2F5062F51F53E32D00AA9F14 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 223424771ABBC0CD00BBC2B1 /* Main.storyboard */; };
+		FE691C1F1F8F1FE20090351F /* BlackoutView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE691C1D1F8F1FE20090351F /* BlackoutView.h */; };
+		FE691C201F8F1FE20090351F /* BlackoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE691C1E1F8F1FE20090351F /* BlackoutView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +149,8 @@
 		6AE313511C47DAA200894C5B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/TOCropViewControllerLocalizable.strings; sourceTree = "<group>"; };
 		CDC8C5751C667B9100BB86A4 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Main.strings; sourceTree = "<group>"; };
 		CDC8C5771C667B9100BB86A4 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/TOCropViewControllerLocalizable.strings; sourceTree = "<group>"; };
+		FE691C1D1F8F1FE20090351F /* BlackoutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlackoutView.h; sourceTree = "<group>"; };
+		FE691C1E1F8F1FE20090351F /* BlackoutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlackoutView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -294,6 +298,8 @@
 				22DB4D931B234D07008B8466 /* TOCropToolbar.m */,
 				22DB4D941B234D07008B8466 /* TOCropView.h */,
 				22DB4D951B234D07008B8466 /* TOCropView.m */,
+				FE691C1D1F8F1FE20090351F /* BlackoutView.h */,
+				FE691C1E1F8F1FE20090351F /* BlackoutView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -310,6 +316,7 @@
 				144B8CD31D22CD650085D774 /* TOCroppedImageAttributes.h in Headers */,
 				2271B63E1DAAB59600AA147F /* TOCropViewController-Bridging-Header.h in Headers */,
 				144B8CD41D22CD650085D774 /* UIImage+CropRotate.h in Headers */,
+				FE691C1F1F8F1FE20090351F /* BlackoutView.h in Headers */,
 				144B8CD51D22CD650085D774 /* TOCropOverlayView.h in Headers */,
 				144B8CD61D22CD650085D774 /* TOCropScrollView.h in Headers */,
 				144B8CE41D22CE0D0085D774 /* TOCropViewController.h in Headers */,
@@ -508,6 +515,7 @@
 				144B8CDE1D22CD730085D774 /* TOCropOverlayView.m in Sources */,
 				144B8CDF1D22CD730085D774 /* TOCropScrollView.m in Sources */,
 				144B8CE01D22CD730085D774 /* TOCropToolbar.m in Sources */,
+				FE691C201F8F1FE20090351F /* BlackoutView.m in Sources */,
 				144B8CE11D22CD730085D774 /* TOCropView.m in Sources */,
 				144B8CE21D22CD730085D774 /* TOCropViewController.m in Sources */,
 			);

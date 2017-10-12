@@ -23,6 +23,7 @@
 #import "TOCropView.h"
 #import "TOCropOverlayView.h"
 #import "TOCropScrollView.h"
+#import "BlackoutView.h"
 
 #define TOCROPVIEW_BACKGROUND_COLOR [UIColor colorWithWhite:0.12f alpha:1.0f]
 
@@ -61,6 +62,7 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
 @property (nonatomic, strong) id translucencyEffect;                /* The dark blur visual effect applied to the visual effect view. */
 @property (nonatomic, strong, readwrite) TOCropOverlayView *gridOverlayView;   /* A grid view overlaid on top of the foreground image view's container. */
 @property (nonatomic, strong) CAShapeLayer *circularMaskLayer;      /* Managing the clipping of the foreground container into a circle */
+@property (nonatomic, strong) BlackoutView *previewView;                  /* Preview view for timeline photo.  */
 
 /* Gesture Recognizers */
 @property (nonatomic, strong) UIPanGestureRecognizer *gridPanGestureRecognizer; /* The gesture recognizer in charge of controlling the resizing of the crop view */
@@ -72,6 +74,7 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
 @property (nonatomic, assign) CGPoint panOriginPoint;     /* The initial touch point of the pan gesture recognizer */
 @property (nonatomic, assign, readwrite) CGRect cropBoxFrame;  /* The frame, in relation to to this view where the grid, and crop container view are aligned */
 @property (nonatomic, strong) NSTimer *resetTimer;  /* The timer used to reset the view after the user stops interacting with it */
+@property (nonatomic, strong) NSTimer *previewTimer;  /* The timer used to show the preview view after the user stops interacting with it */
 @property (nonatomic, assign) BOOL editing;         /* Used to denote the active state of the user manipulating the content */
 @property (nonatomic, assign) BOOL disableForgroundMatching; /* At times during animation, disable matching the forground image view to the background */
 
@@ -423,6 +426,49 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     
     //We can't simply match the frames since if the images are rotated, the frame property becomes unusable
     self.foregroundImageView.frame = [self.backgroundContainerView.superview convertRect:self.backgroundContainerView.frame toView:self.foregroundContainerView];
+
+//    if (self.previewTimer && self.previewTimer.isValid) {
+//        [self.previewTimer invalidate];
+//        self.previewTimer = nil;
+//    }
+//
+//    self.previewTimer = [NSTimer timerWithTimeInterval:1.f target:self selector:@selector(updatePreviewViewFrame) userInfo:nil repeats:NO];
+    [self updatePreviewViewFrame];
+}
+
+- (void)updatePreviewViewFrame {
+    CGFloat width = self.cropBoxFrame.size.width > self.cropBoxFrame.size.height ? self.cropBoxFrame.size.height : self.cropBoxFrame.size.width;
+    CGRect frame = CGRectMake((self.cropBoxFrame.size.width - width) / 2, (self.cropBoxFrame.size.height - width) / 2, width, width);
+    if (self.previewView) {
+        [self.previewView removeFromSuperview];
+    }
+
+    self.previewView = [[BlackoutView alloc] initWithFrame:self.cropBoxFrame];
+    self.previewView.backgroundColor = [UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.3f];
+    self.previewView.fillColor = [UIColor clearColor];
+    [self.previewView setRectsToCutOut:@[[NSValue valueWithCGRect:frame]]];
+
+    // In CocoaPods, strings are stored in a separate bundle from the main one
+    NSBundle *resourceBundle = nil;
+    NSBundle *classBundle = [NSBundle bundleForClass:[self class]];
+    NSURL *resourceBundleURL = [classBundle URLForResource:@"TOCropViewControllerBundle" withExtension:@"bundle"];
+    if (resourceBundleURL) {
+        resourceBundle = [[NSBundle alloc] initWithURL:resourceBundleURL];
+    }
+    else {
+        resourceBundle = classBundle;
+    }
+
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.previewView.frame.size.width, self.previewView.frame.size.height)];
+    label.text = NSLocalizedStringFromTableInBundle(@"Preview",
+                                                    @"TOCropViewControllerLocalizable",
+                                                    resourceBundle,
+                                                    nil);
+    label.textColor = [UIColor whiteColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.font = [UIFont systemFontOfSize:15.f weight:UIFontWeightMedium];
+    [self.previewView addSubview:label];
+    [self addSubview:self.previewView];
 }
 
 - (void)updateCropBoxFrameWithGesturePoint:(CGPoint)point
