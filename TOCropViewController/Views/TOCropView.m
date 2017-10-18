@@ -436,7 +436,7 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     }
 
     self.previewView = [[BlackoutView alloc] initWithFrame:self.cropBoxFrame];
-    self.previewView.backgroundColor = [UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.3f];
+    self.previewView.backgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.5f];
     self.previewView.fillColor = [UIColor clearColor];
     [self.previewView setRectsToCutOut:@[[NSValue valueWithCGRect:frame]]];
 
@@ -465,7 +465,17 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
 
     [UIView animateWithDuration:0.4f animations:^{
         self.previewView.alpha = 1.f;
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [UIView animateWithDuration:0.4f delay:1.f options:nil animations:^{
+                self.previewView.alpha = 0.f;
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    [self.previewView removeFromSuperview];
+                }
+            }];
+        }
+    }];
 }
 
 - (void)updateCropBoxFrameWithGesturePoint:(CGPoint)point
@@ -891,7 +901,7 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
         return;
     }
 
-    if (self.aspectRatio.height == 1.f && self.aspectRatio.width == 1.f) {
+    if (CGSizeEqualToSize(self.aspectRatio, CGSizeZero) || self.aspectRatio.height / self.aspectRatio.width == 1.f) {
         return;
     }
 
