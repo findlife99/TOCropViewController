@@ -459,6 +459,10 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     label.textColor = [UIColor whiteColor];
     label.textAlignment = NSTextAlignmentCenter;
     label.font = [UIFont systemFontOfSize:15.f weight:UIFontWeightMedium];
+    label.layer.shadowColor = [UIColor blackColor].CGColor;
+    label.layer.shadowOpacity = 0.5f;
+    label.layer.masksToBounds = NO;
+    label.layer.shadowOffset = CGSizeMake(0, 1);
     [self.previewView addSubview:label];
     self.previewView.alpha = 0.f;
     [self addSubview:self.previewView];
@@ -467,7 +471,7 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
         self.previewView.alpha = 1.f;
     } completion:^(BOOL finished) {
         if (finished) {
-            [UIView animateWithDuration:0.4f delay:1.f options:nil animations:^{
+            [UIView animateWithDuration:0.4f delay:1.f options:UIViewAnimationOptionTransitionNone animations:^{
                 self.previewView.alpha = 0.f;
             } completion:^(BOOL finished) {
                 if (finished) {
