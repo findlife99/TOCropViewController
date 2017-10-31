@@ -174,7 +174,7 @@
         
         // Work out the cancel button frame
         CGRect frame = CGRectZero;
-        frame.origin.y = self.statusBarVisible ? 20.0f : 0.0f;
+        frame.origin.y = 0.0f;
         frame.size.height = 44.0f;
         frame.size.width = [self.cancelTextButton.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.cancelTextButton.titleLabel.font}].width + 10;
 
