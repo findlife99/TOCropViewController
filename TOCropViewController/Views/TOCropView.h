@@ -138,6 +138,11 @@ typedef NS_ENUM(NSInteger, TOCropViewCroppingStyle) {
 @property (nonatomic, assign) BOOL gridOverlayHidden;
 
 /**
+ Disallow any input while the rotation animation is playing
+ */
+@property (nonatomic, assign) BOOL rotateAnimationInProgress;
+
+/**
  Create a default instance of the crop view with the supplied image
  */
 - (nonnull instancetype)initWithImage:(nonnull UIImage *)image;
