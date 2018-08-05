@@ -73,7 +73,7 @@ typedef NS_ENUM(NSInteger, TOCropViewCroppingStyle) {
 /** 
  The frame of the cropping box in the coordinate space of the crop view
  */
-@property (nonatomic, readonly) CGRect cropBoxFrame;
+@property (nonatomic, assign) CGRect cropBoxFrame;
 
 /**
  The frame of the entire image in the backing scroll view
