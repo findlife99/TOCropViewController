@@ -36,6 +36,8 @@ static const CGFloat kTOCropOverLayerCornerWidth = 20.0f;
 @property (nonatomic, strong) NSArray *bottomRightLineViews;
 @property (nonatomic, strong) NSArray *topRightLineViews;
 
+@property (nonatomic, strong) NSArray *cornerCircleViews;
+
 - (void)setup;
 - (void)layoutLines;
 
@@ -58,14 +60,24 @@ static const CGFloat kTOCropOverLayerCornerWidth = 20.0f;
     UIView *(^newLineView)(void) = ^UIView *(void){
         return [self createNewLineView];
     };
+    
+    UIView *(^cornerCircleView)(void) = ^UIView *(void){
+        return [self createNewCornerCircleView];
+    };
 
     _outerLineViews     = @[newLineView(), newLineView(), newLineView(), newLineView()];
-    
-    _topLeftLineViews   = @[newLineView(), newLineView()];
-    _bottomLeftLineViews = @[newLineView(), newLineView()];
-    _topRightLineViews  = @[newLineView(), newLineView()];
-    _bottomRightLineViews = @[newLineView(), newLineView()];
-    
+    _cornerCircleViews  = @[cornerCircleView(), cornerCircleView(), cornerCircleView(), cornerCircleView()];
+//    _topLeftLineViews   = @[newLineView(), newLineView()];
+//    _bottomLeftLineViews = @[newLineView(), newLineView()];
+//    _topRightLineViews  = @[newLineView(), newLineView()];
+//    _bottomRightLineViews = @[newLineView(), newLineView()];
+    for (NSInteger i = 0; i < 4; i++) {
+        
+        UIView *cornerCircleView = [[UIView alloc] init];
+        cornerCircleView.layer.cornerRadius = 7;
+        cornerCircleView.backgroundColor = [UIColor colorWithRed:0.20 green:0.20 blue:0.20 alpha:1.0];
+        
+    }
     self.displayHorizontalGridLines = YES;
     self.displayVerticalGridLines = YES;
 }
@@ -106,32 +118,54 @@ static const CGFloat kTOCropOverLayerCornerWidth = 20.0f;
     }
     
     //corner liness
-    NSArray *cornerLines = @[self.topLeftLineViews, self.topRightLineViews, self.bottomRightLineViews, self.bottomLeftLineViews];
+//    NSArray *cornerLines = @[self.topLeftLineViews, self.topRightLineViews, self.bottomRightLineViews, self.bottomLeftLineViews];
+    
     for (NSInteger i = 0; i < 4; i++) {
-        NSArray *cornerLine = cornerLines[i];
         
-        CGRect verticalFrame = CGRectZero, horizontalFrame = CGRectZero;
+        UIView *cornerCircleView = self.cornerCircleViews[i];
+        cornerCircleView.layer.cornerRadius = 7;
+        cornerCircleView.backgroundColor = [UIColor colorWithRed:0.20 green:0.20 blue:0.20 alpha:1.0];
         switch (i) {
             case 0: //top left
-                verticalFrame = (CGRect){-3.0f,-3.0f,3.0f,kTOCropOverLayerCornerWidth+3.0f};
-                horizontalFrame = (CGRect){0,-3.0f,kTOCropOverLayerCornerWidth,3.0f};
+                [cornerCircleView setFrame:CGRectMake(-7, -7, 14, 14)];
                 break;
             case 1: //top right
-                verticalFrame = (CGRect){boundsSize.width,-3.0f,3.0f,kTOCropOverLayerCornerWidth+3.0f};
-                horizontalFrame = (CGRect){boundsSize.width-kTOCropOverLayerCornerWidth,-3.0f,kTOCropOverLayerCornerWidth,3.0f};
+                [cornerCircleView setFrame:CGRectMake(boundsSize.width-7, -7, 14, 14)];
                 break;
             case 2: //bottom right
-                verticalFrame = (CGRect){boundsSize.width,boundsSize.height-kTOCropOverLayerCornerWidth,3.0f,kTOCropOverLayerCornerWidth+3.0f};
-                horizontalFrame = (CGRect){boundsSize.width-kTOCropOverLayerCornerWidth,boundsSize.height,kTOCropOverLayerCornerWidth,3.0f};
+                [cornerCircleView setFrame:CGRectMake(boundsSize.width-7,
+                                                      boundsSize.height-7, 14, 14)];
                 break;
             case 3: //bottom left
-                verticalFrame = (CGRect){-3.0f,boundsSize.height-kTOCropOverLayerCornerWidth,3.0f,kTOCropOverLayerCornerWidth};
-                horizontalFrame = (CGRect){-3.0f,boundsSize.height,kTOCropOverLayerCornerWidth+3.0f,3.0f};
+                [cornerCircleView setFrame:CGRectMake(-7,
+                                                      boundsSize.height-7, 14, 14)];
                 break;
         }
         
-        [cornerLine[0] setFrame:verticalFrame];
-        [cornerLine[1] setFrame:horizontalFrame];
+//        NSArray *cornerLine = cornerLines[i];
+//
+//        CGRect verticalFrame = CGRectZero, horizontalFrame = CGRectZero;
+//        switch (i) {
+//            case 0: //top left
+//                verticalFrame = (CGRect){-3.0f,-3.0f,3.0f,kTOCropOverLayerCornerWidth+3.0f};
+//                horizontalFrame = (CGRect){0,-3.0f,kTOCropOverLayerCornerWidth,3.0f};
+//                break;
+//            case 1: //top right
+//                verticalFrame = (CGRect){boundsSize.width,-3.0f,3.0f,kTOCropOverLayerCornerWidth+3.0f};
+//                horizontalFrame = (CGRect){boundsSize.width-kTOCropOverLayerCornerWidth,-3.0f,kTOCropOverLayerCornerWidth,3.0f};
+//                break;
+//            case 2: //bottom right
+//                verticalFrame = (CGRect){boundsSize.width,boundsSize.height-kTOCropOverLayerCornerWidth,3.0f,kTOCropOverLayerCornerWidth+3.0f};
+//                horizontalFrame = (CGRect){boundsSize.width-kTOCropOverLayerCornerWidth,boundsSize.height,kTOCropOverLayerCornerWidth,3.0f};
+//                break;
+//            case 3: //bottom left
+//                verticalFrame = (CGRect){-3.0f,boundsSize.height-kTOCropOverLayerCornerWidth,3.0f,kTOCropOverLayerCornerWidth};
+//                horizontalFrame = (CGRect){-3.0f,boundsSize.height,kTOCropOverLayerCornerWidth+3.0f,3.0f};
+//                break;
+//        }
+//
+//        [cornerLine[0] setFrame:verticalFrame];
+//        [cornerLine[1] setFrame:horizontalFrame];
     }
     
     //grid lines - horizontal
@@ -226,9 +260,17 @@ static const CGFloat kTOCropOverLayerCornerWidth = 20.0f;
 
 - (nonnull UIView *)createNewLineView {
     UIView *newLine = [[UIView alloc] initWithFrame:CGRectZero];
-    newLine.backgroundColor = [UIColor whiteColor];
+    newLine.backgroundColor = [UIColor colorWithRed:0.20 green:0.20 blue:0.20 alpha:1.0];
     [self addSubview:newLine];
     return newLine;
+}
+
+- (nonnull UIView *)createNewCornerCircleView {
+    UIView *circleView = [[UIView alloc] initWithFrame:CGRectZero];
+    circleView.backgroundColor = [UIColor colorWithRed:0.20 green:0.20 blue:0.20 alpha:1.0];
+    circleView.layer.cornerRadius = 7.0;
+    [self addSubview:circleView];
+    return circleView;
 }
 
 @end
